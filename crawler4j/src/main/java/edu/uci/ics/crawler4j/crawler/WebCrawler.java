@@ -41,7 +41,8 @@ public class WebCrawler implements Runnable {
 
 	private HTMLParser htmlParser;
 
-	int myid;
+	private int myid;
+	private Map<String,Object> configs;
 
 	private CrawlController myController;
 
@@ -222,4 +223,12 @@ public class WebCrawler implements Runnable {
 	public static void setMaximumCrawlDepth(short depth) {
 		MAX_CRAWL_DEPTH = depth;
 	}
+
+    public Map<String, Object> getConfigs() {
+        return configs;
+    }
+
+    public void setConfigs(Map<String, Object> configs) {
+        this.configs = configs;
+    }
 }
