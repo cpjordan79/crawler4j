@@ -39,18 +39,19 @@ import edu.uci.ics.crawler4j.util.IO;
  * @author Yasser Ganjisaffar <yganjisa at uci dot edu>
  */
 
-public final class CrawlController {
+public class CrawlController {
 
 	private static final Logger logger = Logger.getLogger(CrawlController.class.getName());
 
-	private Environment env;
-	private List<Object> crawlersLocalData = new ArrayList<Object>();
+	protected Environment env;
+	protected List<Object> crawlersLocalData = new ArrayList<Object>();
 
 	public List<Object> getCrawlersLocalData() {
 		return crawlersLocalData;
 	}
 
-	List<Thread> threads;
+	protected int maxCrawlerId;
+	protected List<Thread> threads;
 
 	public CrawlController(String storageFolder) throws Exception {
 		this(storageFolder, Configurations.getBooleanProperty("crawler.enable_resume", true));
@@ -90,14 +91,15 @@ public final class CrawlController {
 			int numberofCrawlers = numberOfCrawlers;
 			for (int i = 1; i <= numberofCrawlers; i++) {
 				T crawler = _c.newInstance();
-				Thread thread = new Thread(crawler, "Crawler " + i);
+				maxCrawlerId = i;
+				Thread thread = new Thread(crawler, "Crawler " + maxCrawlerId);
 				crawler.setThread(thread);
-				crawler.setMyId(i);
+				crawler.setMyId(maxCrawlerId);
 				crawler.setMyController(this);
 				thread.start();
 				crawlers.add(crawler);
 				threads.add(thread);
-				logger.info("Crawler " + i + " started.");
+				logger.info("Crawler " + maxCrawlerId + " started.");
 			}
 			while (true) {
 				sleep(10);
@@ -107,11 +109,12 @@ public final class CrawlController {
 					if (!thread.isAlive()) {
 						logger.info("Thread " + i + " was dead, I'll recreate it.");
 						T crawler = _c.newInstance();
-						thread = new Thread(crawler, "Crawler " + (i + 1));
+						maxCrawlerId ++;
+						thread = new Thread(crawler, "Crawler " + maxCrawlerId);
 						threads.remove(i);
 						threads.add(i, thread);
 						crawler.setThread(thread);
-						crawler.setMyId(i + 1);
+						crawler.setMyId(maxCrawlerId);
 						crawler.setMyController(this);
 						thread.start();
 						crawlers.remove(i);
@@ -159,14 +162,14 @@ public final class CrawlController {
 		}
 	}
 
-	private void sleep(int seconds) {
+	protected void sleep(int seconds) {
 		try {
 			Thread.sleep(seconds * 1000);
 		} catch (Exception e) {
 		}
 	}
 
-	private boolean isAnyThreadWorking() {
+	protected boolean isAnyThreadWorking() {
 		boolean someoneIsWorking = false;
 		for (int i = 0; i < threads.size(); i++) {
 			Thread thread = threads.get(i);
