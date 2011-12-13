@@ -55,7 +55,7 @@ public final class CrawlController {
 	public CrawlController(String storageFolder) throws Exception {
 		this(storageFolder, Configurations.getBooleanProperty("crawler.enable_resume", true));
 	}
-	
+
 	public CrawlController(String storageFolder, boolean resumable) throws Exception {
 		File folder = new File(storageFolder);
 		if (!folder.exists()) {

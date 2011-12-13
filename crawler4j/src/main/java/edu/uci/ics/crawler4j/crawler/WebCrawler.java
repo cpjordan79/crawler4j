@@ -148,7 +148,7 @@ public class WebCrawler implements Runnable {
 						webURL.setDepth((short) (curURL.getDepth()));
 						webURL.setDocid(-1);
 						if (shouldVisit(webURL) && RobotstxtServer.allows(webURL)) {
-							webURL.setDocid(DocIDServer.getNewDocID(movedToUrl));	
+							webURL.setDocid(DocIDServer.getNewDocID(movedToUrl));
 							Frontier.schedule(webURL);
 						}
 					}
@@ -189,7 +189,7 @@ public class WebCrawler implements Runnable {
 							webURL.setURL(url);
 							webURL.setDocid(-1);
 							webURL.setParentDocid(docid);
-							webURL.setDepth((short) (curURL.getDepth() + 1));							
+							webURL.setDepth((short) (curURL.getDepth() + 1));
 							if (shouldVisit(webURL) && RobotstxtServer.allows(webURL)) {
 								if (MAX_CRAWL_DEPTH == -1 || curURL.getDepth() < MAX_CRAWL_DEPTH) {
 									webURL.setDocid(DocIDServer.getNewDocID(url));
