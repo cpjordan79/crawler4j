@@ -15,6 +15,11 @@ public class ConfigurableCrawlController extends CrawlController {
     
     private static final Logger logger = Logger.getLogger(ConfigurableCrawlController.class);
     
+    public ConfigurableCrawlController(String storageFolder, boolean resumable, Map<String,Object> crawlerConfigs) throws Exception {
+        this(storageFolder, resumable);
+        setCrawlerConfigs(crawlerConfigs);
+    }
+    
     public ConfigurableCrawlController(String storageFolder, boolean resumable) throws Exception {
         super(storageFolder, resumable);
     }

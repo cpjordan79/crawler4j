@@ -5,8 +5,9 @@ for developing the original crawler4j code and making it available on [google co
 
 What I am doing in this fork is extending crawler4j to be a little more flexible for application development. Key things
 that I am working on are as follows:
-* Allow WebCrawlers to have dynamically assigned configurations (Done)
-* Improve thread management in the crawler controller (to come)
+
+*   Allow WebCrawlers to have dynamically assigned configurations (Done)
+*   Improve thread management in the crawler controller (to come)
 
 Configurable WebCrawler
 -------------
