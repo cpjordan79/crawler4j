@@ -24,10 +24,6 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-/**
- * @author Yasser Ganjisaffar <yganjisa at uci dot edu>
- */
-
 public class MyCrawler extends WebCrawler {
 
 	Pattern filters = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
@@ -42,10 +38,16 @@ public class MyCrawler extends WebCrawler {
 		if (filters.matcher(href).matches()) {
 			return false;
 		}
-		if (href.startsWith("http://www.ics.uci.edu/")) {
-			return true;
-		}
-		return false;
+        @SuppressWarnings("unchecked")
+        List<String> acceptableUrls = (List<String>) getConfigs().get("acceptableURLs");
+        if (acceptableUrls != null) {
+            for (String acceptableUrl : acceptableUrls) {
+                if (href.startsWith(acceptableUrl)) {
+        	        return true;
+                }
+            }
+        }
+        return false;
 	}
 	
 	public void visit(Page page) {
