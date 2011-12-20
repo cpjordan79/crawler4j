@@ -26,57 +26,57 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class MyCrawler extends WebCrawler {
 
-	Pattern filters = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
-			+ "|png|tiff?|mid|mp2|mp3|mp4" + "|wav|avi|mov|mpeg|ram|m4v|pdf"
-			+ "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
+    Pattern filters = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g"
+            + "|png|tiff?|mid|mp2|mp3|mp4" + "|wav|avi|mov|mpeg|ram|m4v|pdf"
+            + "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
-	public MyCrawler() {
-	}
+    public MyCrawler() {
+    }
 
-	public boolean shouldVisit(WebURL url) {
-		String href = url.getURL().toLowerCase();
-		if (filters.matcher(href).matches()) {
-			return false;
-		}
+    public boolean shouldVisit(WebURL url) {
+        String href = url.getURL().toLowerCase();
+        if (filters.matcher(href).matches()) {
+            return false;
+        }
         @SuppressWarnings("unchecked")
         List<String> acceptableUrls = (List<String>) getConfigs().get("acceptableURLs");
         if (acceptableUrls != null) {
             for (String acceptableUrl : acceptableUrls) {
                 if (href.startsWith(acceptableUrl)) {
-        	        return true;
+                    return true;
                 }
             }
         }
         return false;
-	}
-	
-	public void visit(Page page) {
-		int docid = page.getWebURL().getDocid();
+    }
+    
+    public void visit(Page page) {
+        int docid = page.getWebURL().getDocid();
         String url = page.getWebURL().getURL();         
         String text = page.getText();
         List<WebURL> links = page.getURLs();
-		int parentDocid = page.getWebURL().getParentDocid();
-		
-		/*
-		 * Using the crawlerConfigs to check for acceptable urls. Only
-		 * these urls will be processed.
-		 */
-		@SuppressWarnings("unchecked")
+        int parentDocid = page.getWebURL().getParentDocid();
+        
+        /*
+         * Using the crawlerConfigs to check for acceptable urls. Only
+         * these urls will be processed.
+         */
+        @SuppressWarnings("unchecked")
         List<String> acceptableURLs = (List<String>)getConfigs().get("acceptableURLs");
-		if (acceptableURLs != null) {
-    		for (String urlPrefix : acceptableURLs) {
-    		    if (url.startsWith(urlPrefix)) {
-    		        System.out.println("Found acceptable URL!");
-    		        System.out.println("Docid: " + docid);
-    		        System.out.println("URL: " + url);
-    		        System.out.println("Text length: " + text.length());
-    		        System.out.println("Number of links: " + links.size());
-    		        System.out.println("Docid of parent page: " + parentDocid);
-    		        System.out.println("=============");
-    		        
-    		        break;
-    		    }
-    		}
-		}
-	}	
+        if (acceptableURLs != null) {
+            for (String urlPrefix : acceptableURLs) {
+                if (url.startsWith(urlPrefix)) {
+                    System.out.println("Found acceptable URL!");
+                    System.out.println("Docid: " + docid);
+                    System.out.println("URL: " + url);
+                    System.out.println("Text length: " + text.length());
+                    System.out.println("Number of links: " + links.size());
+                    System.out.println("Docid of parent page: " + parentDocid);
+                    System.out.println("=============");
+                    
+                    break;
+                }
+            }
+        }
+    }    
 }
